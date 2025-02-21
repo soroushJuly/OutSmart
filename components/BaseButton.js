@@ -1,12 +1,13 @@
 import { View, Text, Pressable, StyleSheet } from 'react-native'
 
-function BaseButton({ children }, props) {
+function BaseButton({ children, title, onPress, style }) {
     return (
-        <View style={styles.buttonOuterContainer}>
+        <View style={[styles.buttonOuterContainer, style]}>
             <Pressable
                 style={({ pressed }) => pressed ? [styles.buttonInnerContainer, styles.pressed] : styles.buttonInnerContainer}
-                onPress={props?.onPress}>
-                <Text style={styles.text}>{children}</Text>
+                onPress={onPress}>
+                <Text style={styles.text}>{title}</Text>
+                <View>{children}</View>
             </Pressable>
         </View>
     )
@@ -20,13 +21,14 @@ const styles = StyleSheet.create({
         borderRadius: 16
     },
     buttonInnerContainer: {
-        backgroundColor: '#00ff00',
+        backgroundColor: 'blue',
         paddingHorizontal: 16,
         paddingVertical: 8,
 
     },
     text: {
         textAlign: 'center',
+        color: 'white'
     },
     pressed: {
         opacity: 0.75
