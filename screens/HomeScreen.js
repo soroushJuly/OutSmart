@@ -1,63 +1,36 @@
 import { useWindowDimensions } from 'react-native';
-import { View, Button, StyleSheet } from 'react-native';
+import { View, StyleSheet, Text } from 'react-native';
 import { useRef } from 'react';
 
-import { WebView } from 'react-native-webview';
-
 import BaseButton from '../components/BaseButton';
+import GameIcon from '../components/GameIcon';
 
-function HomeScreen() {
 
-    const { height, width, scale, fontScale } = useWindowDimensions();
+function HomeScreen({ navigation }) {
+
     const webViewRef = useRef(null);
 
-    const sendMessageToUnity = (message) => {
-        message = { type: "start_game", level: 1 };
-        if (webViewRef.current) {
-            webViewRef.current.injectJavaScript(`sendMessageToUnity(${JSON.stringify(message.type)})`);
-        }
-    };
+    function goToGame(src) {
+        navigation.navigate('Game', { gameSrc: src });
+    }
 
-    // sendMessageToUnity({ type: "start_game", level: 1 });
+    const gameList = [
+        { title: 'XO', imgSrc: require('../assets/game_icons/tik_tak_toe.png'), src: 'https://www.soroushjuly.com/XO/index.html' },
+        { title: 'Math', imgSrc: require('../assets/game_icons/tik_tak_toe.png'), src: 'https://www.soroushjuly.com/XO/index.html' },
+        { title: 'Air hockey', imgSrc: require('../assets/game_icons/air_hockey.png'), src: 'https://www.soroushjuly.com/XO/index.html' },
+        { title: 'Air hockey2', imgSrc: require('../assets/game_icons/air_hockey.png'), src: 'https://www.soroushjuly.com/XO/index.html' }
+    ]
+
     return (
         <View style={styles.container}>
-            <BaseButton>Base Button</BaseButton>
-            <Button title='Send Message' onPress={sendMessageToUnity} style={{ height: 100 }} />
-            {/* <Text>Open up App.js to start working on your app!</Text> */}
-            <View style={{ flexDirection: 'row', width: '100%', height: '80%' }}>
-                <WebView
-                    ref={webViewRef}
-                    source={{ uri: 'https://www.soroushjuly.com/XO/index.html' }}
-                    style={{
-                        marginTop: 0,
-                        flexGrow: 1,
-
-                    }}
-                    onMessage={(event) => {
-                        console.log("Message from Unity:", event.nativeEvent.data);
-                    }}
-
-                />
-            </View>
-            {/* <WebView
-        javaScriptEnabled
-        domStorageEnabled
-        allowUniversalAccessFromFileURLs
-        cacheEnabled={true}
-        originWhitelist={['*']}
-        allowsInlineMediaPlayback
-        renderLoading={() => <ActivityIndicator size="large" color="#00ff00" />}
-
-        onError={(syntheticEvent) => {
-          const { nativeEvent } = syntheticEvent;
-          console.error('WebView error:', nativeEvent);
-        }}
-        onHttpError={(syntheticEvent) => {
-          const { nativeEvent } = syntheticEvent;
-          console.error('HTTP error:', nativeEvent);
-        }}
-        startInLoadingState
-      /> */}
+            {gameList.map((item) =>
+                <GameIcon
+                    imgSource={item.imgSrc}
+                    title={item.title}
+                    style={{ marginBottom: 10 }}
+                    key={item.title}
+                    onPress={goToGame.bind(this, item.src)}
+                />)}
         </View>
     )
 }
@@ -67,10 +40,10 @@ export default HomeScreen;
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        height: '100%',
-        width: '100%',
-        backgroundColor: '#fff',
+        flexDirection: 'row',
+        padding: 20,
+        flexWrap: 'wrap',
         alignItems: 'center',
-        justifyContent: 'center',
+        justifyContent: 'space-between'
     },
 });
