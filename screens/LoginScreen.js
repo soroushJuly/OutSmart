@@ -22,7 +22,7 @@ function LoginScreen({ navigation }) {
         const data = await loginUser({ username: 'sa', password: 'g' });
         console.log(data);
         // dispatch(updateAuth());
-        navigation.navigate('Home');
+        navigation.navigate('Tabs');
     }
 
     function goToSignUp() {
@@ -49,6 +49,7 @@ const styles = StyleSheet.create({
     screenContainer: {
         flex: 1,
         alignItems: 'center',
+        justifyContent: 'center',
         padding: 24
     },
     inputContainer: {
@@ -56,7 +57,7 @@ const styles = StyleSheet.create({
         marginBottom: 30
     },
     h1: {
-        fontSize: 26,
+        fontSize: 40,
         fontWeight: 'bold',
         marginBottom: 24
     }

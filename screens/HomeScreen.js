@@ -23,14 +23,29 @@ function HomeScreen({ navigation }) {
 
     return (
         <View style={styles.container}>
-            {gameList.map((item) =>
-                <GameIcon
-                    imgSource={item.imgSrc}
-                    title={item.title}
-                    style={{ marginBottom: 10 }}
-                    key={item.title}
-                    onPress={goToGame.bind(this, item.src)}
-                />)}
+            <View style={{ flexDirection: 'row', marginBottom: 20 }}>
+                <View>
+                    <Text>Avatar</Text>
+                </View>
+                <View style={{ flex: 1 }}>
+                    <Text>Username</Text>
+                    <Text>Points</Text>
+                    <Text>Credits</Text>
+                </View>
+            </View>
+            <View>
+                <Text style={{ fontSize: 30, fontWeight: 'bold', marginBottom: 12 }}>Games</Text>
+            </View>
+            <View style={styles.gameContainer}>
+                {gameList.map((item) =>
+                    <GameIcon
+                        imgSource={item.imgSrc}
+                        title={item.title}
+                        style={{ marginBottom: 10 }}
+                        key={item.title}
+                        onPress={goToGame.bind(this, item.src)}
+                    />)}
+            </View>
         </View>
     )
 }
@@ -40,8 +55,11 @@ export default HomeScreen;
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        flexDirection: 'row',
         padding: 20,
+    },
+    gameContainer: {
+        flex: 1,
+        flexDirection: 'row',
         flexWrap: 'wrap',
         alignItems: 'center',
         justifyContent: 'space-between'
