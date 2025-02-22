@@ -1,7 +1,10 @@
 import { useState } from 'react';
-import { View, Text, Button, TextInput, StyleSheet } from 'react-native'
+import { View, Text, StyleSheet } from 'react-native'
 import BaseTextInput from '../components/BaseTextInput';
 import BaseButton from '../components/BaseButton';
+import { useDispatch } from 'react-redux';
+import { updateAuth } from '../store/authSlice';
+import { loginUser } from '../utils/api';
 
 
 function LoginScreen({ navigation }) {
@@ -15,7 +18,10 @@ function LoginScreen({ navigation }) {
         setPassword(value);
     }
 
-    function goToHome() {
+    async function handleLogin() {
+        const data = await loginUser({ username: 'sa', password: 'g' });
+        console.log(data);
+        // dispatch(updateAuth());
         navigation.navigate('Home');
     }
 
@@ -31,7 +37,7 @@ function LoginScreen({ navigation }) {
                 <BaseTextInput label="Username" value={username} placeholder='Username' onChange={handleUsername} style={{ marginBottom: 10 }} />
                 <BaseTextInput label="Password" value={password} placeholder='password' onChange={handlePassword} isSensitive={true} />
             </View>
-            <BaseButton title="Login" onPress={goToHome} style={{ marginBottom: 10 }} />
+            <BaseButton title="Login" onPress={handleLogin} style={{ marginBottom: 10 }} />
             <BaseButton title="Sign Up" onPress={goToSignUp} />
         </View>
     )
