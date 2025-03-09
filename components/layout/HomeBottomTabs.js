@@ -5,6 +5,8 @@ import { Ionicons } from "@expo/vector-icons"; // Import icon library
 import StackHomeScreen from './StackHomeScreen';
 
 import AccountScreen from '../../screens/AccountScreen';
+import AddCreditScreen from '../../screens/AddCreditScreen';
+import BaseButton from '../BaseButton';
 // import AllGamesScreen from '../../screens/AllGamesScreen';
 
 // Tab navigator
@@ -37,7 +39,7 @@ function HomeTabs() {
             {/* Header shown false because it's a stack of screens */}
             <Tab.Screen name="Home" component={StackHomeScreen} options={{ headerShown: false }} />
             {/* <Tab.Screen name="All games" component={AllGamesScreen} /> */}
-            <Tab.Screen name="Add Credit" component={AccountScreen} />
+            <Tab.Screen name="Add Credit" component={AddCreditScreen} options={{ headerLeft: () => <BaseButton title="Home" /> }} />
             {/* <Tab.Screen name="Leaderboards" component={AccountScreen} /> */}
             <Tab.Screen name="Account" component={AccountScreen} />
         </Tab.Navigator>

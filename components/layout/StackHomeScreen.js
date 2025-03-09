@@ -13,9 +13,7 @@ function StackHomeScreen() {
             <HomeStack.Screen name="HomeFeed" component={HomeScreen} options={{ title: "OutSmart", headerRight: () => loginProfile }} />
             <HomeStack.Screen name="GameDetails" component={GameDetailsScreen} options={{
                 headerBackTitle: 'Back',
-                headerRight: () => (
-                    <BaseButton title="Login" />
-                ),
+                headerRight: () => loginProfile,
             }} />
         </HomeStack.Navigator>
     );
