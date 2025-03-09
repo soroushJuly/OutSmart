@@ -14,6 +14,7 @@ function AccountScreen() {
                     <Text style={styles.profileText}>Wins:</Text>
                 </View>
             </View>
+            <BaseButton title="Manage Cards" style={styles.button} />
             <BaseButton title="Cashout" style={styles.button} />
             <BaseButton title="Change Email" style={styles.button} />
             <BaseButton title="Change Password" style={styles.button} />

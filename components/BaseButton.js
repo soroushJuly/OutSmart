@@ -4,7 +4,7 @@ function BaseButton({ children, title, onPress, style }) {
     return (
         <View style={[styles.buttonOuterContainer, style]}>
             <Pressable
-                style={({ pressed }) => pressed ? [styles.buttonInnerContainer, styles.pressed] : styles.buttonInnerContainer}
+                style={({ pressed }) => pressed ? [styles.buttonInnerContainer, styles.pressed] : [styles.buttonInnerContainer]}
                 onPress={onPress}>
                 <Text style={styles.text}>{title}</Text>
                 <View>{children}</View>

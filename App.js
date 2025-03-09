@@ -25,11 +25,11 @@ export default function App() {
       <Provider store={store}>
         <NavigationContainer>
           <MainStack.Navigator>
-            <MainStack.Screen name="Tabs" component={HomeTabs} options={{ title: "OutSmart" }} />
+            <MainStack.Screen name="Tabs" component={HomeTabs} options={{ headerShown: false }} />
             {/* Pages with no tabs: */}
             <MainStack.Screen name="Login" component={LoginScreen} options={{ headerShown: false }} />
             <MainStack.Screen name="SignUp" component={SignUpScreen} />
-            <MainStack.Screen name="Game" component={GameScreen} />
+            <MainStack.Screen name="Game" component={GameScreen} options={{ headerBackTitle: "Back" }} />
           </MainStack.Navigator>
         </NavigationContainer>
       </Provider>
