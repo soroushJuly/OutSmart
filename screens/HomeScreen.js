@@ -1,4 +1,4 @@
-import { View, StyleSheet, Text, FlatList } from 'react-native';
+import { View, StyleSheet, Text, FlatList, Pressable } from 'react-native';
 
 import GameIcon from '../components/GameIcon';
 import BaseCarousel from '../components/BaseCarousel';
@@ -6,8 +6,8 @@ import BaseCarousel from '../components/BaseCarousel';
 const carouselData = [...new Array(4).keys()];
 
 function HomeScreen({ navigation }) {
-    function goToGame(src) {
-        navigation.navigate('Game', { gameSrc: src });
+    function handleGameItemPress(src) {
+        navigation.navigate('GameDetails', { game: src });
     }
 
     const gameList = [
@@ -57,7 +57,7 @@ function HomeScreen({ navigation }) {
                             size='sm'
                             title={item.title}
                             key={item.title}
-                            onPress={goToGame.bind(this, item.src)}
+                            onPress={handleGameItemPress.bind(this, item)}
                         />
                     </View>}
                     keyExtractor={item => item.title}
@@ -73,21 +73,24 @@ function HomeScreen({ navigation }) {
                     numColumns={2}
                     // Ensures spacing between columns and rows
                     columnWrapperStyle={{ gap: 10, }}
-                    renderItem={({ item }) => <View style={styles.gameItem}>
-                        <GameIcon
-                            imgSource={item.imgSrc}
-                            size='sm'
-                            // title={item.title}
-                            key={item.title}
-                            onPress={goToGame.bind(this, item.src)}
-                        />
-                        <Text style={{
-                            textAlign: 'center', flex: 1,
-                            fontWeight: 'bold',
-                            alignSelf: 'center',
-                            textAlignVertical: 'center', height: '100%'
-                        }}>{item.title}</Text>
-                    </View>}
+                    renderItem={({ item }) =>
+                        <Pressable
+                            style={({ pressed }) => pressed ? [styles.gameItem, styles.pressed] : styles.gameItem}
+                            onPress={handleGameItemPress.bind(this, item)}>
+                            <GameIcon
+                                imgSource={item.imgSrc}
+                                size='sm'
+                                // title={item.title}
+                                key={item.title}
+                            />
+                            <Text style={{
+                                textAlign: 'center', flex: 1,
+                                fontWeight: 'bold',
+                                alignSelf: 'center',
+                                textAlignVertical: 'center', height: '100%'
+                            }}>{item.title}</Text>
+                        </Pressable>
+                    }
                     keyExtractor={item => item.title}
                 />
             </View>
@@ -114,7 +117,6 @@ const styles = StyleSheet.create({
         borderRadius: 12,
         padding: 8,
         alignSelf: 'center',
-        // marginHorizontal: 8,
     },
     recentGameItem: {
         marginRight: 10,
