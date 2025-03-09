@@ -1,6 +1,7 @@
 import { StatusBar } from 'expo-status-bar';
 import { Provider } from 'react-redux';
 import store from './store/main';
+import { StripeProvider } from '@stripe/stripe-react-native';
 
 // Importing navigators
 import { NavigationContainer } from '@react-navigation/native';
@@ -17,21 +18,25 @@ import HomeTabs from './components/layout/HomeBottomTabs';
 // Initialize navigators
 const MainStack = createNativeStackNavigator();
 
+// Replace with your Stripe publishable key
+const STRIPE_PUBLISHABLE_KEY = 'YOUR_STRIPE_PUBLISHABLE_KEY';
 
 export default function App() {
   return (
     <>
       <StatusBar style="dark" />
       <Provider store={store}>
-        <NavigationContainer>
-          <MainStack.Navigator>
-            <MainStack.Screen name="Tabs" component={HomeTabs} options={{ headerShown: false }} />
-            {/* Pages with no tabs: */}
-            <MainStack.Screen name="Login" component={LoginScreen} options={{ headerShown: false }} />
-            <MainStack.Screen name="SignUp" component={SignUpScreen} />
-            <MainStack.Screen name="Game" component={GameScreen} options={{ headerBackTitle: "Back" }} />
-          </MainStack.Navigator>
-        </NavigationContainer>
+        <StripeProvider publishableKey={STRIPE_PUBLISHABLE_KEY}>
+          <NavigationContainer>
+            <MainStack.Navigator>
+              <MainStack.Screen name="Tabs" component={HomeTabs} options={{ headerShown: false }} />
+              {/* Pages with no tabs: */}
+              <MainStack.Screen name="Login" component={LoginScreen} options={{ headerShown: false }} />
+              <MainStack.Screen name="SignUp" component={SignUpScreen} />
+              <MainStack.Screen name="Game" component={GameScreen} options={{ headerBackTitle: "Back" }} />
+            </MainStack.Navigator>
+          </NavigationContainer>
+        </StripeProvider>
       </Provider>
     </>
   );
