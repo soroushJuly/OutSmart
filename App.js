@@ -37,10 +37,10 @@ export default function App() {
       <Provider store={store}>
         <NavigationContainer>
           <Stack.Navigator>
+            <Stack.Screen name="Tabs" component={HomeTabs} options={{ title: "OutSmart" }} />
             <Stack.Screen name="Login" component={LoginScreen} options={{ headerShown: false }} />
             <Stack.Screen name="SignUp" component={SignUpScreen} />
             <Stack.Screen name="Game" component={GameScreen} />
-            <Stack.Screen name="Tabs" component={HomeTabs} options={{ title: "OutSmart" }} />
           </Stack.Navigator>
         </NavigationContainer>
       </Provider>
