@@ -5,29 +5,17 @@ import store from './store/main';
 // Importing navigators
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
 
 // Importing Screens
-import HomeScreen from './screens/HomeScreen';
 import LoginScreen from './screens/LoginScreen';
 import SignUpScreen from './screens/SignUpScreen';
 import GameScreen from './screens/GameScreen';
-import AccountScreen from './screens/AccountScreen';
+// Importing tabs
+import HomeTabs from './components/layout/HomeBottomTabs';
 
 // Initialize navigators
-const Stack = createNativeStackNavigator();
-const Tab = createBottomTabNavigator();
-
-function HomeTabs() {
-  return (
-    <Tab.Navigator>
-      <Tab.Screen name="Home" component={HomeScreen} options={{ headerShown: false }} />
-      <Tab.Screen name="Add Credit" component={AccountScreen} options={{ headerShown: false }} />
-      <Tab.Screen name="Account" component={AccountScreen} options={{ headerShown: false }} />
-    </Tab.Navigator>
-  );
-}
+const MainStack = createNativeStackNavigator();
 
 
 export default function App() {
@@ -36,12 +24,13 @@ export default function App() {
       <StatusBar style="dark" />
       <Provider store={store}>
         <NavigationContainer>
-          <Stack.Navigator>
-            <Stack.Screen name="Tabs" component={HomeTabs} options={{ title: "OutSmart" }} />
-            <Stack.Screen name="Login" component={LoginScreen} options={{ headerShown: false }} />
-            <Stack.Screen name="SignUp" component={SignUpScreen} />
-            <Stack.Screen name="Game" component={GameScreen} />
-          </Stack.Navigator>
+          <MainStack.Navigator>
+            <MainStack.Screen name="Tabs" component={HomeTabs} options={{ title: "OutSmart" }} />
+            {/* Pages with no tabs: */}
+            <MainStack.Screen name="Login" component={LoginScreen} options={{ headerShown: false }} />
+            <MainStack.Screen name="SignUp" component={SignUpScreen} />
+            <MainStack.Screen name="Game" component={GameScreen} />
+          </MainStack.Navigator>
         </NavigationContainer>
       </Provider>
     </>
