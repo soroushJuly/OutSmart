@@ -1,15 +1,24 @@
 import { Image, View, Pressable, Text, StyleSheet } from "react-native";
 
-function GameIcon({ title, imgSource, onPress, style }) {
+function GameIcon({ title, imgSource, onPress, style, size = 'md' }) {
+    function checkImageSize() {
+        if (size === 'sm') {
+            return styles.imageSm
+        } else if (size === 'md') {
+            return styles.imageMd
+        } else {
+            return styles.imageLg
+        }
+    }
 
     return (
         <View style={[styles.container, style]}>
             <Pressable
                 style={({ pressed }) => pressed ? [styles.imageContainer, styles.pressed] : styles.imageContainer}
                 onPress={onPress}>
-                <Image source={imgSource} style={styles.image} />
+                <Image source={imgSource} style={[styles.image, checkImageSize()]} />
             </Pressable>
-            <Text style={styles.title}>{title}</Text>
+            {title && <Text style={styles.title}>{title}</Text>}
         </View >
     )
 }
@@ -18,10 +27,19 @@ export default GameIcon;
 
 const styles = StyleSheet.create({
     image: {
+        borderRadius: 12,
+    },
+    imageSm: {
+        width: 50,
+        height: 50,
+    },
+    imageMd: {
         width: 100,
         height: 100,
-        borderRadius: 12,
-        marginBottom: 6,
+    },
+    imageLg: {
+        width: 150,
+        height: 150,
     },
     imageContainer: {
         shadowColor: '#000',
@@ -39,6 +57,7 @@ const styles = StyleSheet.create({
         // borderRadius: 12
     },
     title: {
-        fontWeight: 'bold'
+        marginTop: 8,
+        fontSize: 10,
     }
 })
