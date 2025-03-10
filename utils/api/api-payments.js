@@ -32,7 +32,8 @@ export async function addCredit({ amount, userId }) {
 
         return success;
     } catch (error) {
-        console.error('Error adding credit:', error);
+        console.error('Error adding credit:');
+        console.log(error.response.data);
         Alert.alert('Error', 'Unable to add credit. Please try again.');
     }
 

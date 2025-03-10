@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, TextInput, TouchableOpacity, Alert } from 'react-native';
 import { useStripe } from '@stripe/stripe-react-native';
-import { fetchPaymentSheetParams } from '../utils/api/payments';
+import { fetchPaymentSheetParams, addCredit } from '../utils/api/api-payments';
 
 function AddCreditScreen() {
     const { initPaymentSheet, presentPaymentSheet } = useStripe();
@@ -46,7 +46,7 @@ function AddCreditScreen() {
             } else {
                 Alert.alert('Success', 'Payment completed successfully!');
                 // APT call to Add credit to user's account
-
+                addCredit({ amount, userId: 1 });
                 setAmount('');
             }
         } catch (error) {
