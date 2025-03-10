@@ -30,3 +30,26 @@ export async function loginUser({ username, password }) {
         return { success, message, data };
     }
 };
+
+export async function registerUser({ username, password }) {
+    try {
+        const response = await axios.post(REGISTER_URL, {
+            username,
+            password,
+            email,
+            phone
+        });
+
+        const data = response.data.data;
+        const success = response.data.success;
+        const message = response.data.message;
+        return { success, data };
+    } catch (error) {
+        const data = error.response?.data?.data;
+        const success = error.response.data.success;
+        const message = error.response.data.message;
+        return { success, message, data };
+    }
+};
+
+

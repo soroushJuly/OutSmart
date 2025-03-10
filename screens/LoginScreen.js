@@ -25,7 +25,6 @@ function LoginScreen({ navigation }) {
     }, []);
 
     async function handleLogin() {
-        // const token = await SecureStore.getItemAsync('secure_token');
         const { data, success } = await loginUser({ username, password });
 
         if (success === false) {
@@ -33,9 +32,9 @@ function LoginScreen({ navigation }) {
             return;
         }
 
+        setHasError(false);
         // save token to local storage
         await SecureStore.setItemAsync('secure_token', data.token);
-        console.log('token:', token);
         // navigate to home screen
         navigation.navigate('Tabs');
     }

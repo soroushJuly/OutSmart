@@ -5,8 +5,8 @@ import BaseButton from '../BaseButton';
 
 const HomeStack = createNativeStackNavigator();
 
-function StackHomeScreen() {
-    const loginProfile = <BaseButton title="Login" />;
+function StackHomeScreen({ navigation }) {
+    const loginProfile = <BaseButton title="Login" onPress={() => navigation.navigate('Login')} />;
 
     return (
         <HomeStack.Navigator>

@@ -1,13 +1,19 @@
-import { View, Text, Button, TextInput, StyleSheet } from 'react-native'
+import { View, Text, TextInput, StyleSheet } from 'react-native';
 
-
-function BaseTextInput({ value, placeholder, label, onChangeText, isSensitive, style }) {
+function BaseTextInput({ value, placeholder, label, onChangeText, isSensitive, style, ...props }) {
     return (
         <View style={[style]}>
             <Text style={styles.label}>{label}</Text>
-            <TextInput value={value} placeholder={placeholder} style={styles.input} onChangeText={onChangeText} secureTextEntry={isSensitive} />
+            <TextInput
+                value={value}
+                placeholder={placeholder}
+                style={styles.input}
+                onChangeText={onChangeText}
+                secureTextEntry={isSensitive}
+                {...props}
+            />
         </View>
-    )
+    );
 }
 
 export default BaseTextInput;
@@ -24,4 +30,4 @@ const styles = StyleSheet.create({
         marginBottom: 2,
         fontSize: 20
     }
-})
+});

@@ -7,11 +7,11 @@ import { StripeProvider } from '@stripe/stripe-react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
-
 // Importing Screens
 import LoginScreen from './screens/LoginScreen';
 import SignUpScreen from './screens/SignUpScreen';
 import GameScreen from './screens/GameScreen';
+import VerifyEmailScreen from './screens/VerifyEmailScreen';
 // Importing tabs
 import HomeTabs from './components/layout/HomeBottomTabs';
 
@@ -34,6 +34,7 @@ export default function App() {
               <MainStack.Screen name="Login" component={LoginScreen} options={{ headerShown: false }} />
               <MainStack.Screen name="SignUp" component={SignUpScreen} />
               <MainStack.Screen name="Game" component={GameScreen} options={{ headerBackTitle: "Back" }} />
+              <MainStack.Screen name="VerifyEmail" component={VerifyEmailScreen} />
             </MainStack.Navigator>
           </NavigationContainer>
         </StripeProvider>
