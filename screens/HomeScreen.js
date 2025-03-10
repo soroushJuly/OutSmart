@@ -11,7 +11,7 @@ function HomeScreen({ navigation }) {
     }
 
     const gameList = [
-        { title: 'XO', imgSrc: require('../assets/game_icons/tik_tak_toe.png'), src: 'https://9804-80-5-131-212.ngrok-free.app/xo/' },
+        { title: 'Ball Balance', imgSrc: require('../assets/game_icons/tik_tak_toe.png'), src: 'https://0d90-80-5-131-212.ngrok-free.app/games/ball-balance/' },
         { title: 'Math', imgSrc: require('../assets/game_icons/tik_tak_toe.png'), src: 'https://www.soroushjuly.com/XO/index.html' },
         { title: 'Air hockey', imgSrc: require('../assets/game_icons/air_hockey.png'), src: 'https://www.soroushjuly.com/XO/index.html' },
         { title: 'Air hockey2', imgSrc: require('../assets/game_icons/air_hockey.png'), src: 'https://www.soroushjuly.com/XO/index.html' },

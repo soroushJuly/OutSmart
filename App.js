@@ -18,15 +18,12 @@ import HomeTabs from './components/layout/HomeBottomTabs';
 // Initialize navigators
 const MainStack = createNativeStackNavigator();
 
-// Replace with your Stripe publishable key
-const STRIPE_PUBLISHABLE_KEY = 'YOUR_STRIPE_PUBLISHABLE_KEY';
-
 export default function App() {
   return (
     <>
       <StatusBar style="dark" />
       <Provider store={store}>
-        <StripeProvider publishableKey={STRIPE_PUBLISHABLE_KEY}>
+        <StripeProvider publishableKey={process.env.EXPO_PUBLIC_STRIPE_PUBLISHABLE_KEY}>
           <NavigationContainer>
             <MainStack.Navigator>
               <MainStack.Screen name="Tabs" component={HomeTabs} options={{ headerShown: false }} />

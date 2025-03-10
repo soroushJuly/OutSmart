@@ -7,7 +7,7 @@ function GameDetailsScreen({ navigation, route }) {
     console.log(route.params)
 
     function handlePlayPress(src) {
-        navigation.navigate('Game', { game: src });
+        navigation.navigate('Game', { src });
     }
 
     return (

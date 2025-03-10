@@ -1,50 +1,23 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, TextInput, TouchableOpacity, Alert } from 'react-native';
 import { useStripe } from '@stripe/stripe-react-native';
+import { fetchPaymentSheetParams } from '../utils/api/payments';
 
 function AddCreditScreen() {
     const { initPaymentSheet, presentPaymentSheet } = useStripe();
     const [amount, setAmount] = useState('');
 
-    const fetchPaymentSheetParams = async () => {
-        try {
-            // Replace with your backend API endpoint
-            const response = await fetch('YOUR_BACKEND_URL/create-payment-intent', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    amount: parseFloat(amount) * 100, // Convert to cents
-                }),
-            });
-
-            const { paymentIntent, ephemeralKey, customer } = await response.json();
-
-            return {
-                paymentIntent,
-                ephemeralKey,
-                customer,
-            };
-        } catch (error) {
-            console.error('Error fetching payment sheet params:', error);
-            Alert.alert('Error', 'Unable to process payment. Please try again.');
-        }
-    };
-
     const initializePaymentSheet = async () => {
         try {
             const {
-                paymentIntent,
-                ephemeralKey,
+                paymentIntentClientSecret,
                 customer,
-            } = await fetchPaymentSheetParams();
+            } = await fetchPaymentSheetParams({ amount });
 
             const { error } = await initPaymentSheet({
                 merchantDisplayName: "OutSmart",
                 customerId: customer,
-                customerEphemeralKeySecret: ephemeralKey,
-                paymentIntentClientSecret: paymentIntent,
+                paymentIntentClientSecret: paymentIntentClientSecret,
                 allowsDelayedPaymentMethods: false,
             });
 
@@ -72,6 +45,8 @@ function AddCreditScreen() {
                 Alert.alert('Error', error.message);
             } else {
                 Alert.alert('Success', 'Payment completed successfully!');
+                // APT call to Add credit to user's account
+
                 setAmount('');
             }
         } catch (error) {
