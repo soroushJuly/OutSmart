@@ -2,10 +2,15 @@ import React, { useState } from 'react';
 import { View, Text, StyleSheet, TextInput, TouchableOpacity, Alert } from 'react-native';
 import { useStripe } from '@stripe/stripe-react-native';
 import { fetchPaymentSheetParams, addCredit } from '../utils/api/api-payments';
+import useProtectedRoute from '../utils/guard-hook';
 
 function AddCreditScreen() {
     const { initPaymentSheet, presentPaymentSheet } = useStripe();
     const [amount, setAmount] = useState('');
+    const screenParams = { isProtected: true };
+    // Protect the route
+    useProtectedRoute(screenParams);
+
 
     const initializePaymentSheet = async () => {
         try {

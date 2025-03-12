@@ -1,7 +1,12 @@
 import { View, Text, Image, StyleSheet } from 'react-native'
 import BaseButton from '../components/BaseButton';
+import useProtectedRoute from '../utils/guard-hook';
 
 function AccountScreen() {
+    const screenParams = { isProtected: true };
+    // Protect the route
+    useProtectedRoute(screenParams);
+
     return (
         <View style={{ flex: 1, padding: 16 }}>
             <View style={{ flexDirection: 'row', marginBottom: 24 }}>
