@@ -1,17 +1,17 @@
 import { useEffect, useState } from 'react';
-import { View, Text, StyleSheet } from 'react-native'
+import { View, Text, StyleSheet, Alert } from 'react-native'
 import BaseTextInput from '../components/BaseTextInput';
 import BaseButton from '../components/BaseButton';
+import { loginUser } from '../utils/api/api-auth';
 import { useDispatch } from 'react-redux';
-import { updateAuth } from '../store/authSlice';
-import { loginUser } from '../utils/api';
-import * as SecureStore from 'expo-secure-store';
+import { storeLogin } from '../store/authSlice';
 
 
 function LoginScreen({ navigation }) {
-    const [username, setUsername] = useState('ali@test.comm');
+    const [username, setUsername] = useState('11@dddgffff.com');
     const [password, setPassword] = useState('12345678aA@');
     const [hasError, setHasError] = useState(false);
+    const dispatch = useDispatch();
 
     function handleUsernameChange(value) {
         setUsername(value);
@@ -20,12 +20,12 @@ function LoginScreen({ navigation }) {
         setPassword(value);
     }
 
-    useEffect(() => {
-        console.log('login screen mounted');
-    }, []);
+    function handleBackPress() {
+        navigation.navigate('Tabs');
+    }
 
     async function handleLogin() {
-        const { data, success } = await loginUser({ username, password });
+        const { data, success, message } = await loginUser({ username, password });
 
         if (success === false) {
             setHasError(true);
@@ -34,7 +34,8 @@ function LoginScreen({ navigation }) {
 
         setHasError(false);
         // save token to local storage
-        await SecureStore.setItemAsync('secure_token', data.token);
+        dispatch(storeLogin({ token: data.token, user: data.user }));
+        Alert.alert('Success!', message);
         // navigate to home screen
         navigation.navigate('Tabs');
     }
@@ -43,9 +44,9 @@ function LoginScreen({ navigation }) {
         navigation.navigate('SignUp');
     }
 
-
     return (
         <View style={styles.screenContainer}>
+            <BaseButton title="Back to Games List" onPress={handleBackPress} style={{ marginBottom: 10 }} />
             <Text style={styles.h1}>Login</Text>
             <View style={styles.inputContainer}>
                 <BaseTextInput label="Username" value={username} placeholder='Username' onChangeText={handleUsernameChange} style={{ marginBottom: 10 }} />

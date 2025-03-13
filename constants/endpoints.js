@@ -5,3 +5,4 @@ export const AUTH_URL = BASE_URL + '/auth';
 // Second layer of endpoints
 export const LOGIN_URL = AUTH_URL + '/login';
 export const REGISTER_URL = AUTH_URL + '/register';
+export const PROFILE_URL = AUTH_URL + '/profile';

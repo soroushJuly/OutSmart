@@ -1,11 +1,14 @@
 import { View, Text, Image, StyleSheet } from 'react-native'
 import BaseButton from '../components/BaseButton';
 import useProtectedRoute from '../utils/guard-hook';
+import { useSelector } from 'react-redux';
 
 function AccountScreen() {
     const screenParams = { isProtected: true };
     // Protect the route
     useProtectedRoute(screenParams);
+
+    const user = useSelector(state => state.auth.user);
 
     return (
         <View style={{ flex: 1, padding: 16 }}>
@@ -14,9 +17,9 @@ function AccountScreen() {
                     <Image style={{ width: "100", height: '100', borderRadius: 10 }} source={require("../assets/icon.png")} width="100" height="100" />
                 </View>
                 <View style={{ justifyContent: 'space-around', marginLeft: 8 }}>
-                    <Text style={styles.profileText}>Username: </Text>
-                    <Text style={styles.profileText}>Credit: </Text>
-                    <Text style={styles.profileText}>Wins:</Text>
+                    <Text style={styles.profileText}>Username: {user.username}</Text>
+                    <Text style={styles.profileText}>Credit: {user.credit}</Text>
+                    <Text style={styles.profileText}>Wins: {user.wins}</Text>
                 </View>
             </View>
             <BaseButton title="Manage Cards" style={styles.button} />

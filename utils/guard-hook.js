@@ -15,9 +15,9 @@ function useProtectedRoute({ isProtected, }) {
         if (!isAuthenticated) {
             navigation.navigate('Login');
         }
-        return () => {
-            console.log("Cleanup function");
-        };
+        // return () => {
+        //     console.log("Cleanup function");
+        // };
     }, [isAuthenticated]);
 }
 
