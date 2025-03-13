@@ -2,6 +2,7 @@ import { View, StyleSheet, Text, FlatList, Pressable } from 'react-native';
 
 import GameIcon from '../components/GameIcon';
 import BaseCarousel from '../components/BaseCarousel';
+import { useSelector } from 'react-redux';
 
 const carouselData = [...new Array(4).keys()];
 
@@ -10,8 +11,12 @@ function HomeScreen({ navigation }) {
         navigation.navigate('GameDetails', { game: src });
     }
 
+    const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
+    const user = useSelector(state => state.auth.user);
+    console.log('User:', user);
+
     const gameList = [
-        { title: 'Ball Balance', imgSrc: require('../assets/game_icons/tik_tak_toe.png'), src: 'https://0d90-80-5-131-212.ngrok-free.app/games/ball-balance/' },
+        { title: 'Ball Balance', imgSrc: require('../assets/game_icons/tik_tak_toe.png'), src: 'https://b165-80-5-131-212.ngrok-free.app/games/ball-balance/' },
         { title: 'Math', imgSrc: require('../assets/game_icons/tik_tak_toe.png'), src: 'https://www.soroushjuly.com/XO/index.html' },
         { title: 'Air hockey', imgSrc: require('../assets/game_icons/air_hockey.png'), src: 'https://www.soroushjuly.com/XO/index.html' },
         { title: 'Air hockey2', imgSrc: require('../assets/game_icons/air_hockey.png'), src: 'https://www.soroushjuly.com/XO/index.html' },
@@ -25,6 +30,7 @@ function HomeScreen({ navigation }) {
 
     return (
         <View style={styles.container}>
+            <Text >{user?.email.toString()}</Text>
             {/* Promotions section */}
             <View style={{ marginBottom: 20 }}>
                 <View>
@@ -77,10 +83,11 @@ function HomeScreen({ navigation }) {
                         <Pressable
                             style={({ pressed }) => pressed ? [styles.gameItem, styles.pressed] : styles.gameItem}
                             onPress={handleGameItemPress.bind(this, item)}>
+                            {/* There is another pressable inside this game icon */}
                             <GameIcon
                                 imgSource={item.imgSrc}
                                 size='sm'
-                                // title={item.title}
+                                onPress={handleGameItemPress.bind(this, item)}
                                 key={item.title}
                             />
                             <Text style={{
