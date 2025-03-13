@@ -1,5 +1,8 @@
 import { Text, View, Image, StyleSheet } from "react-native";
 import BaseButton from "../components/BaseButton";
+import { useEffect } from "react";
+import { useSelector } from "react-redux";
+import { selectIsAuthenticated, selectUser } from "../store/authSlice";
 
 function GameDetailsScreen({ navigation, route }) {
     const { game } = route.params;
@@ -9,6 +12,22 @@ function GameDetailsScreen({ navigation, route }) {
     function handlePlayPress(src) {
         navigation.navigate('Game', { src });
     }
+
+    const isAuthenticated = useSelector(selectIsAuthenticated);
+    const user = useSelector(selectUser);
+
+    useEffect(() => {
+        if (isAuthenticated) {
+            navigation.setOptions({
+                headerRight: () => <Text ellipsizeMode='tail' numberOfLines={1} style={{ maxWidth: '120' }}>{user?.username}</Text>,
+            });
+        } else {
+            navigation.setOptions({
+                headerRight: () => <BaseButton title="Login" onPress={() => navigation.navigate('Login')} />,
+            });
+        }
+
+    }, [isAuthenticated, user, navigation]);
 
     return (
         <View style={styles.container}>

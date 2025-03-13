@@ -13,13 +13,15 @@ export async function loginUser({ username, password }) {
             password
         });
 
+        console.log('response', response.data);
+
         const data = response.data.data;
         const success = response.data.success;
         const message = response.data.message;
         return { success, data, message };
     } catch (error) {
         const data = error.response?.data;
-        const success = error.response.data.success;
+        const success = error.response.data.success || false;
         const message = error.response.data.message;
         return { success, message, data };
     }
@@ -27,8 +29,6 @@ export async function loginUser({ username, password }) {
 
 export async function registerUser({ username, password, confirmPassword, email }) {
     try {
-        console.log({ username, password, email, confirmPassword });
-
         const response = await axios.post(REGISTER_URL, {
             username,
             password,

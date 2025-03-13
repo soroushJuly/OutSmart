@@ -27,8 +27,8 @@ function LoginScreen({ navigation }) {
     async function handleLogin() {
         const { data, success, message } = await loginUser({ username, password });
 
-        if (success === false) {
-            setHasError(true);
+        if (!success) {
+            // setHasError(true);
             return;
         }
 

@@ -17,12 +17,12 @@ function AccountScreen() {
                     <Image style={{ width: "100", height: '100', borderRadius: 10 }} source={require("../assets/icon.png")} width="100" height="100" />
                 </View>
                 <View style={{ justifyContent: 'space-around', marginLeft: 8 }}>
-                    <Text style={styles.profileText}>Username: {user.username}</Text>
-                    <Text style={styles.profileText}>Credit: {user.credit}</Text>
-                    <Text style={styles.profileText}>Wins: {user.wins}</Text>
+                    <Text style={styles.profileText}>Username: {user?.username}</Text>
+                    <Text style={styles.profileText}>Credit: {user?.credit}</Text>
+                    <Text style={styles.profileText}>Wins: {user?.wins}</Text>
                 </View>
             </View>
-            <BaseButton title="Manage Cards" style={styles.button} />
+            {/* <BaseButton title="Manage Cards" style={styles.button} /> */}
             <BaseButton title="Cashout" style={styles.button} />
             <BaseButton title="Change Email" style={styles.button} />
             <BaseButton title="Change Password" style={styles.button} />

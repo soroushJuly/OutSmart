@@ -3,6 +3,9 @@ import { View, StyleSheet, Text, FlatList, Pressable } from 'react-native';
 import GameIcon from '../components/GameIcon';
 import BaseCarousel from '../components/BaseCarousel';
 import { useSelector } from 'react-redux';
+import { selectIsAuthenticated, selectUser } from '../store/authSlice';
+import { useEffect } from 'react';
+import BaseButton from '../components/BaseButton';
 
 const carouselData = [...new Array(4).keys()];
 
@@ -11,9 +14,24 @@ function HomeScreen({ navigation }) {
         navigation.navigate('GameDetails', { game: src });
     }
 
-    const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
-    const user = useSelector(state => state.auth.user);
     console.log('User:', user);
+
+    const isAuthenticated = useSelector(selectIsAuthenticated);
+    const user = useSelector(selectUser);
+
+    useEffect(() => {
+        console.log('Checking auth effect');
+        if (isAuthenticated) {
+            navigation.setOptions({
+                headerRight: () => <Text ellipsizeMode='tail' numberOfLines={1} style={{ maxWidth: '120' }}>{user?.username}</Text>,
+            });
+        } else {
+            navigation.setOptions({
+                headerRight: () => <BaseButton title="Login" onPress={() => navigation.navigate('Login')} />,
+            });
+        }
+
+    }, [isAuthenticated, user, navigation]);
 
     const gameList = [
         { title: 'Ball Balance', imgSrc: require('../assets/game_icons/tik_tak_toe.png'), src: 'https://b165-80-5-131-212.ngrok-free.app/games/ball-balance/' },
@@ -30,11 +48,10 @@ function HomeScreen({ navigation }) {
 
     return (
         <View style={styles.container}>
-            <Text >{user?.email.toString()}</Text>
             {/* Promotions section */}
             <View style={{ marginBottom: 20 }}>
                 <View>
-                    <Text style={{ fontSize: 22, fontWeight: 'bold', marginBottom: 8 }}>Offers and Promotions 🚀</Text>
+                    <Text style={{ fontSize: 22, fontWeight: 'bold', marginBottom: 8 }}>News and Promotions 🚀</Text>
                 </View>
                 <BaseCarousel data={carouselData} renderItem={({ index }) => (
                     <View
