@@ -1,30 +1,42 @@
 import React, { useState } from "react";
-import { View, Text, StyleSheet, KeyboardAvoidingView, ScrollView, Platform } from "react-native";
+import { View, Text, StyleSheet, KeyboardAvoidingView, ScrollView, Platform, Alert } from "react-native";
 import BaseButton from "../components/BaseButton";
 import BaseTextInput from "../components/BaseTextInput";
-import { registerUser } from "../utils/api";
+import { registerUser } from "../utils/api/api-auth";
+import { storeLogin } from "../store/authSlice";
+import { useDispatch } from "react-redux";
 
 function SignUp({ navigation }) {
-    const [username, setUsername] = useState('');
-    const [password, setPassword] = useState('');
-    const [email, setEmail] = useState('');
+    const [username, setUsername] = useState('mamad');
+    const [password, setPassword] = useState('12345678aA@');
+    const [confirmPassword, setConfirmPassword] = useState('12345678aA@');
+    const [email, setEmail] = useState('11@ff.com');
     const [phone, setPhone] = useState('');
+
+    const dispatch = useDispatch();
 
 
     async function handleSignUp() {
-        console.log({ username, password, email, phone });
-        // const { data, success } = await registerUser({ username, password, email, phone });
+        const { data, message, success } = await registerUser({ username, password, email, confirmPassword });
 
-        // if (success === false) {
-        //     setHasError(true);
-        //     return;
-        // }
+        if (!success) {
+            // setHasError(true);
+            console.log('Error:', data);
+            return;
+        }
 
         // setHasError(false);
-        // // save token to local storage
-        // await SecureStore.setItemAsync('secure_token', data.token);
+        // save token to local storage
+        console.log('data', data);
+        dispatch(storeLogin(data));
+
+        Alert.alert('Success!', message);
+
+        // navigate to home screen
+        navigation.navigate('Tabs');
+
         // navigate to verify email screen
-        navigation.navigate('VerifyEmail');
+        // navigation.navigate('VerifyEmail');
     }
 
     return (
@@ -43,6 +55,12 @@ function SignUp({ navigation }) {
                     placeholder="Password"
                     value={password}
                     onChangeText={setPassword}
+                    secureTextEntry
+                />
+                <BaseTextInput
+                    placeholder="Confirm Password"
+                    value={confirmPassword}
+                    onChangeText={setConfirmPassword}
                     secureTextEntry
                 />
                 <BaseTextInput
@@ -74,8 +92,6 @@ const styles = StyleSheet.create({
     },
     scrollContainer: {
         flexGrow: 1,
-        // justifyContent: 'center',
-        // alignItems: 'center',
         padding: 16,
     }
 });
