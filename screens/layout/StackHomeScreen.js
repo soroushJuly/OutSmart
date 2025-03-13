@@ -7,7 +7,7 @@ const HomeStack = createNativeStackNavigator();
 function StackHomeScreen({ navigation }) {
 
     return (
-        <HomeStack.Navigator onStateChange={() => checkAuth}>
+        <HomeStack.Navigator>
             <HomeStack.Screen
                 name="HomeFeed"
                 component={HomeScreen}

@@ -3,10 +3,10 @@ import { Ionicons } from "@expo/vector-icons"; // Import icon library
 
 // Importing stack navigators
 import StackHomeScreen from './StackHomeScreen';
+import StackAccountScreens from './StackAccountScreens';
 
-import AccountScreen from '../../screens/AccountScreen';
 import AddCreditScreen from '../../screens/AddCreditScreen';
-import BaseButton from '../BaseButton';
+import BaseButton from '../../components/BaseButton';
 // import AllGamesScreen from '../../screens/AllGamesScreen';
 
 // Tab navigator
@@ -27,7 +27,7 @@ function HomeTabs() {
                         iconName = focused ? "add-circle" : "add-circle-outline";
                     } else if (route.name === "Leaderboards") {
                         iconName = focused ? "trophy" : "trophy-outline";
-                    } else if (route.name === "Account") {
+                    } else if (route.name === "StackAccount") {
                         iconName = focused ? "person" : "person-outline";
                     }
 
@@ -41,7 +41,7 @@ function HomeTabs() {
             {/* <Tab.Screen name="All games" component={AllGamesScreen} /> */}
             <Tab.Screen name="Add Credit" component={AddCreditScreen} options={{ headerLeft: () => <BaseButton title="Home" /> }} />
             {/* <Tab.Screen name="Leaderboards" component={AccountScreen} /> */}
-            <Tab.Screen name="Account" component={AccountScreen} />
+            <Tab.Screen name="StackAccount" component={StackAccountScreens} options={{ headerShown: false }} />
         </Tab.Navigator>
     );
 }

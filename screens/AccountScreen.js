@@ -3,12 +3,16 @@ import BaseButton from '../components/BaseButton';
 import useProtectedRoute from '../utils/guard-hook';
 import { useSelector } from 'react-redux';
 
-function AccountScreen() {
+function AccountScreen({ navigation }) {
     const screenParams = { isProtected: true };
     // Protect the route
     useProtectedRoute(screenParams);
 
     const user = useSelector(state => state.auth.user);
+
+    const handleFaqPress = () => {
+        navigation.navigate('Tabs', { screen: 'StackAccount', params: { screen: 'FAQs' } });
+    }
 
     return (
         <View style={{ flex: 1, padding: 16 }}>
@@ -26,7 +30,7 @@ function AccountScreen() {
             <BaseButton title="Cashout" style={styles.button} />
             <BaseButton title="Change Email" style={styles.button} />
             <BaseButton title="Change Password" style={styles.button} />
-            <BaseButton title="FAQs" style={styles.button} />
+            <BaseButton title="FAQs" style={styles.button} onPress={handleFaqPress} />
             <BaseButton title="Logout" style={styles.button} />
             {/* <Text></Text> */}
         </View>
@@ -41,4 +45,4 @@ const styles = StyleSheet.create({
         marginBottom: 12
     },
     profileText: { fontSize: 20 }
-})
+});

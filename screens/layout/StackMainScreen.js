@@ -3,7 +3,7 @@ import LoginScreen from '../../screens/LoginScreen';
 import SignUpScreen from '../../screens/SignUpScreen';
 import GameScreen from '../../screens/GameScreen';
 import VerifyEmailScreen from '../../screens/VerifyEmailScreen';
-import HomeTabs from '../../components/layout/HomeBottomTabs';
+import HomeTabs from './HomeBottomTabs';
 
 const MainStack = createNativeStackNavigator();
 
