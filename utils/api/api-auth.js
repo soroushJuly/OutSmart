@@ -8,10 +8,12 @@ import * as SecureStore from 'expo-secure-store';
 // ------------ AUTH ---------- //
 export async function loginUser({ username, password }) {
     try {
-        const response = await axios.post(LOGIN_URL, {
-            email: username,
-            password
-        });
+        const response = await axios.post(LOGIN_URL,
+            {
+                email: username,
+                password
+            }
+        );
 
         console.log('response', response.data);
 
