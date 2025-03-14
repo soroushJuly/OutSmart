@@ -8,7 +8,7 @@ import Carousel, {
     Pagination,
 } from "react-native-reanimated-carousel";
 
-function BaseCarousel({ data, renderItem }) {
+function BaseCarousel({ data, renderItem, style }) {
     const { width } = useWindowDimensions();
     const ref = useRef(null);
     const progress = useSharedValue(0);
@@ -28,6 +28,7 @@ function BaseCarousel({ data, renderItem }) {
         <>
             <Carousel
                 ref={ref}
+                style={style}
                 // 20 is the container padding
                 // TODO: fix this
                 width={width - 2 * 16}

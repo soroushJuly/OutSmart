@@ -1,15 +1,16 @@
-import { View, StyleSheet, Text, FlatList, Pressable } from 'react-native';
+import { View, StyleSheet, Text, FlatList, Pressable, ImageBackground } from 'react-native';
 
 import GameIcon from '../components/GameIcon';
 import BaseCarousel from '../components/BaseCarousel';
 import { useSelector } from 'react-redux';
 import { selectIsAuthenticated, selectUser } from '../store/authSlice';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import BaseButton from '../components/BaseButton';
+import { getAllNews } from '../utils/api/api-news';
 
-const carouselData = [...new Array(4).keys()];
 
 function HomeScreen({ navigation }) {
+    const [carouselData, setCarouselData] = useState([]);
     function handleGameItemPress(src) {
         navigation.navigate('GameDetails', { game: src });
     }
@@ -31,10 +32,19 @@ function HomeScreen({ navigation }) {
             });
         }
 
+        const fetchNews = async () => {
+            const { data, success } = await getAllNews();
+            if (success) {
+                setCarouselData(data);
+            }
+        }
+
+        fetchNews();
     }, [isAuthenticated, user, navigation]);
 
+
     const gameList = [
-        { title: 'Ball Balance', imgSrc: require('../assets/game_icons/tik_tak_toe.png'), src: 'https://b165-80-5-131-212.ngrok-free.app/games/ball-balance/' },
+        { title: 'Ball Balance', imgSrc: require('../assets/game_icons/tik_tak_toe.png'), src: process.env.EXPO_PUBLIC_BASE_URL + '/games/ball-balance/' },
         { title: 'Math', imgSrc: require('../assets/game_icons/tik_tak_toe.png'), src: 'https://www.soroushjuly.com/XO/index.html' },
         { title: 'Air hockey', imgSrc: require('../assets/game_icons/air_hockey.png'), src: 'https://www.soroushjuly.com/XO/index.html' },
         { title: 'Air hockey2', imgSrc: require('../assets/game_icons/air_hockey.png'), src: 'https://www.soroushjuly.com/XO/index.html' },
@@ -51,23 +61,24 @@ function HomeScreen({ navigation }) {
             {/* Promotions section */}
             <View style={{ marginBottom: 20 }}>
                 <View>
-                    <Text style={{ fontSize: 22, fontWeight: 'bold', marginBottom: 8 }}>News and Promotions 🚀</Text>
+                    <Text style={styles.sectionTitle}>News and Promotions 🚀</Text>
                 </View>
-                <BaseCarousel data={carouselData} renderItem={({ index }) => (
-                    <View
-                        style={{
-                            flex: 1,
-                            borderWidth: 1,
-                            justifyContent: "center",
-                        }}
-                    >
-                        <Text style={{ textAlign: "center", fontSize: 30 }}>{index}</Text>
-                    </View>
+                <BaseCarousel style={{ borderRadius: 4 }} data={carouselData} renderItem={({ index }) => (
+                    <ImageBackground source={{ uri: process.env.EXPO_PUBLIC_BASE_URL + carouselData[index].thumbnail }} style={{ flex: 1 }}>
+                        <View
+                            style={{
+                                flex: 1,
+                                justifyContent: "center",
+                            }}
+                        >
+                            {/* <Text style={{ textAlign: "center", fontSize: 30 }}>{index}</Text> */}
+                        </View>
+                    </ImageBackground>
                 )} />
             </View>
             {/* Recent Games section */}
             <View>
-                <Text style={{ fontSize: 22, fontWeight: 'bold', marginBottom: 8 }}>Recent Games</Text>
+                <Text style={styles.sectionTitle}>Recent Games</Text>
             </View>
             <View>
                 <FlatList
@@ -88,7 +99,7 @@ function HomeScreen({ navigation }) {
             </View>
             {/* Games section */}
             <View>
-                <Text style={{ fontSize: 22, fontWeight: 'bold', marginBottom: 8 }}>Games</Text>
+                <Text style={styles.sectionTitle}>Games</Text>
             </View>
             <View style={styles.gameContainer}>
                 <FlatList
@@ -129,6 +140,11 @@ const styles = StyleSheet.create({
         flex: 1,
         paddingHorizontal: 16,
         paddingTop: 16
+    },
+    sectionTitle: {
+        fontSize: 20,
+        fontWeight: 'bold',
+        marginBottom: 8
     },
     gameContainer: {
         flex: 1,
