@@ -1,8 +1,10 @@
 
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
-import FaqScreen from '../FaqScreen';
-import AccountScreen from '../AccountScreen';
+import FaqScreen from '../StackAccount/FaqScreen';
+import ChangePasswordScreen from '../StackAccount/ChangePasswordScreen';
+import ChangeEmailScreen from '../StackAccount/ChangeEmailScreen';
+import AccountScreen from '../StackAccount/AccountScreen';
 
 const AccountStack = createNativeStackNavigator();
 
@@ -17,6 +19,14 @@ function StackAccountScreens({ navigation }) {
             <AccountStack.Screen
                 name="FAQs"
                 component={FaqScreen}
+            />
+            <AccountStack.Screen
+                name="ChangePassword"
+                component={ChangePasswordScreen}
+            />
+            <AccountStack.Screen
+                name="ChangeEmail"
+                component={ChangeEmailScreen}
             />
         </AccountStack.Navigator>
     );

@@ -8,4 +8,6 @@ export const NEWS_URL = BASE_URL + '/news-promotions';
 export const LOGIN_URL = AUTH_URL + '/login';
 export const REGISTER_URL = AUTH_URL + '/register';
 export const PROFILE_URL = AUTH_URL + '/profile';
+export const CHANGE_PASSWORD_URL = AUTH_URL + '/change-password';
+export const CHANGE_EMAIL_URL = AUTH_URL + '/change-email';
 export const FAQ_ALL_URL = FAQ_URL + '/all';

@@ -1,5 +1,6 @@
 import axios from "axios";
 import { PAYMENTS_URL } from "../../constants/endpoints";
+import * as SecureStore from 'expo-secure-store';
 
 export async function fetchPaymentSheetParams({ amount }) {
     try {
@@ -20,20 +21,26 @@ export async function fetchPaymentSheetParams({ amount }) {
     }
 }
 
-export async function addCredit({ amount, userId }) {
+export async function addCredit({ amount }) {
     try {
+        const token = await SecureStore.getItemAsync('secure_token');
+        if (!token) {
+            return { success: false, message: 'No token found' };
+        }
+
         const response = await axios.post(PAYMENTS_URL + '/add-credit', {
             amount: parseFloat(amount) * 100, // Convert to cents,
-            userId
-        });
+        },
+            { headers: { Authorization: `Bearer ${token}` } }
+        );
 
-        const { success } = await response.data;
+        const { success, data } = await response.data;
         console.log('/add-credit', success);
 
-        return success;
+        return { success, data };
     } catch (error) {
         console.error('Error adding credit:');
-        console.log(error.response.data);
+        console.log(error);
         Alert.alert('Error', 'Unable to add credit. Please try again.');
     }
 

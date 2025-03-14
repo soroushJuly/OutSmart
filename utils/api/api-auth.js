@@ -1,5 +1,5 @@
 import axios from "axios";
-import { LOGIN_URL, REGISTER_URL, PROFILE_URL } from "../../constants/endpoints";
+import { LOGIN_URL, REGISTER_URL, PROFILE_URL, CHANGE_EMAIL_URL, CHANGE_PASSWORD_URL } from "../../constants/endpoints";
 import * as SecureStore from 'expo-secure-store';
 
 // ------------ STATUS CHECKER ---------- //
@@ -57,11 +57,9 @@ export async function getUser() {
         if (!token) {
             return { success: false, message: 'No token found' };
         }
-        console.log('token', token);
+
         const response = await axios.get(PROFILE_URL, {
-            headers: {
-                Authorization: `Bearer ${token}`
-            }
+            headers: { Authorization: `Bearer ${token}` }
         });
 
 
@@ -77,5 +75,53 @@ export async function getUser() {
         return { success, message, data };
     }
 };
+
+
+export async function changePassword({ currentPassword, newPassword }) {
+    try {
+        const token = await SecureStore.getItemAsync('secure_token');
+        if (!token) {
+            return { success: false, message: 'No token found' };
+        }
+
+        const response = await axios.put(CHANGE_PASSWORD_URL, {
+            currentPassword,
+            newPassword
+        }, { headers: { Authorization: `Bearer ${token}` } });
+
+        const data = response.data?.data;
+        const success = response.data?.success;
+        const message = response.data?.message;
+        return { success, message, data };
+    } catch (error) {
+        const data = error.response?.data;
+        const success = error.response.data.success;
+        const message = error.response.data.message;
+        return { success, message, data };
+    }
+}
+
+export async function changeEmail({ email }) {
+    try {
+        const token = await SecureStore.getItemAsync('secure_token');
+        if (!token) {
+            return { success: false, message: 'No token found' };
+        }
+
+        const response = await axios.put(CHANGE_EMAIL_URL, {
+            newEmail: email
+        }, { headers: { Authorization: `Bearer ${token}` } });
+
+        const data = response.data?.data;
+        const success = response.data?.success;
+        const message = response.data?.message;
+        return { success, message, data };
+    } catch (error) {
+        const data = error.response?.data;
+        const success = error.response.data.success;
+        const message = error.response.data.message;
+        return { success, message, data };
+    }
+}
 
 

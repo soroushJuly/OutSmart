@@ -1,5 +1,5 @@
 import { View, Text, StyleSheet, ScrollView } from 'react-native';
-import { getAllFaqs } from '../utils/api/api-faq';
+import { getAllFaqs } from '../../utils/api/api-faq';
 import { useState, useEffect } from 'react';
 
 const FaqScreen = () => {
