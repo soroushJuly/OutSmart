@@ -1,64 +1,102 @@
-import { useWindowDimensions } from 'react-native';
-import { View, Button, StyleSheet } from 'react-native';
-import { useRef } from 'react';
+import { View, StyleSheet, ActivityIndicator, useWindowDimensions, Button } from 'react-native';
+import { useEffect, useRef, useState } from 'react';
+import * as SecureStore from 'expo-secure-store';
+import useProtectedRoute from '../utils/guard-hook';
 
 import { WebView } from 'react-native-webview';
 
-import BaseButton from '../components/BaseButton';
+function GameScreen({ navigation, route }) {
+    const screenParams = { isProtected: true };
+    // Protect the route
+    useProtectedRoute(screenParams);
 
-function GameScreen({ route }) {
+    const [loading, setLoading] = useState(true);
+
+
+    const { width, height } = useWindowDimensions();
+
     // Game file path
-    const gameSrc = route.params.gameSrc;
+    const gameSrc = route.params.src;
+    const [token, setToken] = useState('')
 
-
-    const { height, width, scale, fontScale } = useWindowDimensions();
     const webViewRef = useRef(null);
 
-    const sendMessageToUnity = (message) => {
-        message = { type: "start_game", level: 1 };
+    function sendTokenToGame(token) {
         if (webViewRef.current) {
-            webViewRef.current.injectJavaScript(`sendMessageToUnity(${JSON.stringify(message.type)})`);
+            const safeMessage = JSON.stringify({ type: "auth", token });
+            webViewRef.current.injectJavaScript(`window.receiveMessageFromReact(${safeMessage});`);
         }
-    };
+    }
+
+    useEffect(() => {
+        const getToken = async () => {
+            try {
+                const storedToken = await SecureStore.getItemAsync('secure_token');
+                if (storedToken) {
+                    setToken(storedToken);
+                }
+            } catch (errorr) {
+                console.error('Error fetching token:', error);
+                navigation.navigate('Login');
+            } finally {
+                // setLoading(false);
+            }
+        }
+
+        getToken();
+    }, [webViewRef]);
 
     return (
         <View style={styles.container}>
-            <BaseButton title="Send Message" onPress={sendMessageToUnity} style={{ marginBottom: 20 }} />
-            {/* <Text>Open up App.js to start working on your app!</Text> */}
-            <View style={{ flexDirection: 'row', width: '100%', height: '85%' }}>
+            {loading && (
+                <View style={{
+                    position: "absolute",
+                    top: 0,
+                    left: 0,
+                    right: 0,
+                    bottom: 0,
+                    zIndex: 5,
+                    justifyContent: "center",
+                    alignItems: "center", width: width, height: height, justifyContent: 'center', backgroundColor: 'purple'
+                }}>
+                    <ActivityIndicator size="large" color="white" />
+                </View>
+            )}
+            {token &&
                 <WebView
                     ref={webViewRef}
                     source={{ uri: gameSrc }}
-                    style={{
-                        marginTop: 0,
-                        flexGrow: 1,
-
-                    }}
+                    javaScriptEnabled={true}  // Enable JavaScript in WebView
+                    domStorageEnabled={true}
+                    originWhitelist={['*']}  // Allow all origins (or set specific ones) // Prevents loading untrusted content TODO: Change this to the game's domain
                     onMessage={(event) => {
-                        console.log("Message from Unity:", event.nativeEvent.data);
+                        try {
+                            const message = JSON.parse(event.nativeEvent.data); // Parse the incoming message from Phaser
+                            console.log("Message from Phaser:", message);
+
+                            if (message.event === "gameFinished") {
+                                console.log("Game finished with score:", message.score);
+                            }
+                        } catch (error) {
+                            console.error("Error parsing message:", error);
+                        }
                     }}
-
+                    onLoadEnd={() => {
+                        // send token to game after 1 second
+                        setTimeout(() => {
+                            sendTokenToGame(token);
+                            setLoading(false);
+                        }, 1000);
+                    }}
+                    onError={(syntheticEvent) => {
+                        const { nativeEvent } = syntheticEvent;
+                        console.error('WebView error:', nativeEvent);
+                    }}
+                    containerStyle={{ flex: 1, width: width, opacity: 1 }}
+                    incognito={false} // Make sure cookies persist in the WebView
+                    useWebKit={true}
                 />
-            </View>
-            {/* <WebView
-        javaScriptEnabled
-        domStorageEnabled
-        allowUniversalAccessFromFileURLs
-        cacheEnabled={true}
-        originWhitelist={['*']}
-        allowsInlineMediaPlayback
-        renderLoading={() => <ActivityIndicator size="large" color="#00ff00" />}
-
-        onError={(syntheticEvent) => {
-          const { nativeEvent } = syntheticEvent;
-          console.error('WebView error:', nativeEvent);
-        }}
-        onHttpError={(syntheticEvent) => {
-          const { nativeEvent } = syntheticEvent;
-          console.error('HTTP error:', nativeEvent);
-        }}
-        startInLoadingState
-      /> */}
+            }
         </View>
     )
 }
