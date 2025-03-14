@@ -10,7 +10,7 @@ function GameDetailsScreen({ navigation, route }) {
     console.log(route.params)
 
     function handlePlayPress(src) {
-        navigation.navigate('Game', { src });
+        navigation.navigate('Game', { src: process.env.EXPO_PUBLIC_BASE_URL + src });
     }
 
     const isAuthenticated = useSelector(selectIsAuthenticated);

@@ -16,7 +16,7 @@ function GameIcon({ title, imgSource, onPress, style, size = 'md' }) {
             <Pressable
                 style={({ pressed }) => pressed ? [styles.imageContainer, styles.pressed] : styles.imageContainer}
                 onPress={onPress}>
-                <Image source={imgSource} style={[styles.image, checkImageSize()]} />
+                <Image source={imgSource} src={imgSource} style={[styles.image, checkImageSize()]} />
             </Pressable>
             {title && <Text style={styles.title}>{title}</Text>}
         </View >

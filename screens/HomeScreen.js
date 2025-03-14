@@ -7,18 +7,19 @@ import { selectIsAuthenticated, selectUser } from '../store/authSlice';
 import { useEffect, useState } from 'react';
 import BaseButton from '../components/BaseButton';
 import { getAllNews } from '../utils/api/api-news';
+import { getAllGames } from '../utils/api/api-games';
 
 
 function HomeScreen({ navigation }) {
     const [carouselData, setCarouselData] = useState([]);
-    function handleGameItemPress(src) {
-        navigation.navigate('GameDetails', { game: src });
-    }
-
-    console.log('User:', user);
+    const [gameList, setGameList] = useState([]);
 
     const isAuthenticated = useSelector(selectIsAuthenticated);
     const user = useSelector(selectUser);
+
+    function handleGameItemPress(item) {
+        navigation.navigate('GameDetails', { game: item });
+    }
 
     useEffect(() => {
         console.log('Checking auth effect');
@@ -38,23 +39,18 @@ function HomeScreen({ navigation }) {
                 setCarouselData(data);
             }
         }
+        const fetchGames = async () => {
+            const { data, success } = await getAllGames();
+            if (success) {
+                setGameList(data?.games);
+            }
+        }
 
         fetchNews();
+        fetchGames();
     }, [isAuthenticated, user, navigation]);
 
 
-    const gameList = [
-        { title: 'Ball Balance', imgSrc: require('../assets/game_icons/tik_tak_toe.png'), src: process.env.EXPO_PUBLIC_BASE_URL + '/games/ball-balance/' },
-        { title: 'Math', imgSrc: require('../assets/game_icons/tik_tak_toe.png'), src: 'https://www.soroushjuly.com/XO/index.html' },
-        { title: 'Air hockey', imgSrc: require('../assets/game_icons/air_hockey.png'), src: 'https://www.soroushjuly.com/XO/index.html' },
-        { title: 'Air hockey2', imgSrc: require('../assets/game_icons/air_hockey.png'), src: 'https://www.soroushjuly.com/XO/index.html' },
-        { title: 'Air hockey3', imgSrc: require('../assets/game_icons/air_hockey.png'), src: 'https://www.soroushjuly.com/XO/index.html' },
-        { title: 'Air hockey42', imgSrc: require('../assets/game_icons/air_hockey.png'), src: 'https://www.soroushjuly.com/XO/index.html' },
-        { title: 'Air hockey44', imgSrc: require('../assets/game_icons/air_hockey.png'), src: 'https://www.soroushjuly.com/XO/index.html' },
-        { title: 'Air hockey552', imgSrc: require('../assets/game_icons/air_hockey.png'), src: 'https://www.soroushjuly.com/XO/index.html' },
-        { title: 'Air hockey44ew', imgSrc: require('../assets/game_icons/air_hockey.png'), src: 'https://www.soroushjuly.com/XO/index.html' },
-        { title: 'Air hockey55ew2', imgSrc: require('../assets/game_icons/air_hockey.png'), src: 'https://www.soroushjuly.com/XO/index.html' }
-    ]
 
     return (
         <View style={styles.container}>
@@ -87,7 +83,7 @@ function HomeScreen({ navigation }) {
                     style={{ marginBottom: 8 }}
                     renderItem={({ item }) => <View style={styles.recentGameItem}>
                         <GameIcon
-                            imgSource={item.imgSrc}
+                            imgSource={process.env.EXPO_PUBLIC_BASE_URL + item.thumbnail}
                             size='sm'
                             title={item.title}
                             key={item.title}
@@ -113,7 +109,7 @@ function HomeScreen({ navigation }) {
                             onPress={handleGameItemPress.bind(this, item)}>
                             {/* There is another pressable inside this game icon */}
                             <GameIcon
-                                imgSource={item.imgSrc}
+                                imgSource={process.env.EXPO_PUBLIC_BASE_URL + item.thumbnail}
                                 size='sm'
                                 onPress={handleGameItemPress.bind(this, item)}
                                 key={item.title}
@@ -123,7 +119,7 @@ function HomeScreen({ navigation }) {
                                 fontWeight: 'bold',
                                 alignSelf: 'center',
                                 textAlignVertical: 'center', height: '100%'
-                            }}>{item.title}</Text>
+                            }}>{item.src}</Text>
                         </Pressable>
                     }
                     keyExtractor={item => item.title}
