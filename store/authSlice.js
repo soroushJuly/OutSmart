@@ -21,6 +21,9 @@ const authSlice = createSlice({
     name: 'auth',
     initialState: { isAuthenticated: false, user: null },
     reducers: {
+        storeProfile: (state, action) => {
+            state.user = action.payload;
+        },
     },
     extraReducers: (builder) => {
         builder.addCase(storeLogin.fulfilled, (state, action) => {
@@ -38,4 +41,5 @@ const authSlice = createSlice({
 export const selectIsAuthenticated = (state) => state.auth.isAuthenticated;
 export const selectUser = (state) => state.auth.user;
 
+export const { storeProfile } = authSlice.actions;
 export default authSlice.reducer;

@@ -3,6 +3,10 @@ import { View, Text, StyleSheet, TextInput, TouchableOpacity, Alert } from 'reac
 import { useStripe } from '@stripe/stripe-react-native';
 import { fetchPaymentSheetParams, addCredit } from '../utils/api/api-payments';
 import useProtectedRoute from '../utils/guard-hook';
+import BaseButton from '../components/BaseButton';
+import { useDispatch } from 'react-redux';
+import { storeProfile } from '../store/authSlice';
+
 
 function AddCreditScreen() {
     const { initPaymentSheet, presentPaymentSheet } = useStripe();
@@ -10,6 +14,8 @@ function AddCreditScreen() {
     const screenParams = { isProtected: true };
     // Protect the route
     useProtectedRoute(screenParams);
+
+    const dispatch = useDispatch();
 
 
     const initializePaymentSheet = async () => {
@@ -50,8 +56,12 @@ function AddCreditScreen() {
                 Alert.alert('Error', error.message);
             } else {
                 Alert.alert('Success', 'Payment completed successfully!');
-                // APT call to Add credit to user's account
-                addCredit({ amount, userId: 1 });
+                // API call to Add credit to user's account
+                const { success, data } = await addCredit({ amount });
+                if (success) {
+                    // Update the user's credit in the Redux store
+                    dispatch(storeProfile(data?.user));
+                }
                 setAmount('');
             }
         } catch (error) {
@@ -70,12 +80,7 @@ function AddCreditScreen() {
                 value={amount}
                 onChangeText={setAmount}
             />
-            <TouchableOpacity
-                style={styles.button}
-                onPress={openPaymentSheet}
-            >
-                <Text style={styles.buttonText}>Pay with Stripe</Text>
-            </TouchableOpacity>
+            <BaseButton title="Deposit" onPress={openPaymentSheet} />
         </View>
     );
 }

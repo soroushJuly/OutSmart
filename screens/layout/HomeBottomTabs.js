@@ -12,7 +12,11 @@ import BaseButton from '../../components/BaseButton';
 // Tab navigator
 const Tab = createBottomTabNavigator();
 
-function HomeTabs() {
+function HomeTabs({ navigation }) {
+
+    function handleHome() {
+        navigation.navigate('Tabs', { screen: 'Home' })
+    };
     return (
         <Tab.Navigator
             screenOptions={({ route }) => ({
@@ -39,9 +43,9 @@ function HomeTabs() {
             {/* Header shown false because it's a stack of screens */}
             <Tab.Screen name="Home" component={StackHomeScreen} options={{ headerShown: false }} />
             {/* <Tab.Screen name="All games" component={AllGamesScreen} /> */}
-            <Tab.Screen name="Add Credit" component={AddCreditScreen} options={{ headerLeft: () => <BaseButton title="Home" /> }} />
+            <Tab.Screen name="Add Credit" component={AddCreditScreen} options={{ headerLeft: () => <BaseButton title="Home" onPress={handleHome} /> }} />
             {/* <Tab.Screen name="Leaderboards" component={AccountScreen} /> */}
-            <Tab.Screen name="StackAccount" component={StackAccountScreens} options={{ headerShown: false }} />
+            < Tab.Screen name="StackAccount" component={StackAccountScreens} options={{ headerShown: false }} />
         </Tab.Navigator>
     );
 }

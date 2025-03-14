@@ -8,7 +8,7 @@ import { storeLogin } from '../store/authSlice';
 
 
 function LoginScreen({ navigation }) {
-    const [username, setUsername] = useState('11@dddgffff.com');
+    const [username, setUsername] = useState('11@ff.comj');
     const [password, setPassword] = useState('12345678aA@');
     const [hasError, setHasError] = useState(false);
     const dispatch = useDispatch();
