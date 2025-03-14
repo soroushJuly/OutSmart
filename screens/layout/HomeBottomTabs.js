@@ -45,7 +45,7 @@ function HomeTabs({ navigation }) {
             {/* <Tab.Screen name="All games" component={AllGamesScreen} /> */}
             <Tab.Screen name="Add Credit" component={AddCreditScreen} options={{ headerLeft: () => <BaseButton title="Home" onPress={handleHome} /> }} />
             {/* <Tab.Screen name="Leaderboards" component={AccountScreen} /> */}
-            < Tab.Screen name="StackAccount" component={StackAccountScreens} options={{ headerShown: false }} />
+            < Tab.Screen name="StackAccount" component={StackAccountScreens} options={{ headerShown: false, title: "Account" }} />
         </Tab.Navigator>
     );
 }

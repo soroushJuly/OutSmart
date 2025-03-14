@@ -119,7 +119,7 @@ function HomeScreen({ navigation }) {
                                 fontWeight: 'bold',
                                 alignSelf: 'center',
                                 textAlignVertical: 'center', height: '100%'
-                            }}>{item.src}</Text>
+                            }}>{item.title}</Text>
                         </Pressable>
                     }
                     keyExtractor={item => item.title}
