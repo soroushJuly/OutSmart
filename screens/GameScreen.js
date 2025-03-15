@@ -2,6 +2,7 @@ import { View, StyleSheet, ActivityIndicator, useWindowDimensions, Button } from
 import { useEffect, useRef, useState } from 'react';
 import * as SecureStore from 'expo-secure-store';
 import useProtectedRoute from '../utils/guard-hook';
+import BaseButton from '../components/BaseButton';
 
 import { WebView } from 'react-native-webview';
 
@@ -28,6 +29,8 @@ function GameScreen({ navigation, route }) {
         }
     }
 
+    function handleBackPress() { navigation.goBack(); }
+
     useEffect(() => {
         const getToken = async () => {
             try {
@@ -35,7 +38,7 @@ function GameScreen({ navigation, route }) {
                 if (storedToken) {
                     setToken(storedToken);
                 }
-            } catch (errorr) {
+            } catch (error) {
                 console.error('Error fetching token:', error);
                 navigation.navigate('Login');
             } finally {
@@ -48,7 +51,7 @@ function GameScreen({ navigation, route }) {
 
     return (
         <View style={styles.container}>
-            {loading && (
+            {loading && (<>
                 <View style={{
                     position: "absolute",
                     top: 0,
@@ -61,14 +64,19 @@ function GameScreen({ navigation, route }) {
                 }}>
                     <ActivityIndicator size="large" color="white" />
                 </View>
+                <BaseButton title="Back" style={{ position: "absolute", top: 64, left: 16, zIndex: 6 }} onPress={handleBackPress} />
+            </>
             )}
+            {/* Remove this later */}
+            <BaseButton title="Back" style={{ position: "absolute", top: 64, left: 16, zIndex: 6 }} onPress={handleBackPress} />
+
             {token &&
                 <WebView
                     ref={webViewRef}
                     source={{ uri: gameSrc }}
                     javaScriptEnabled={true}  // Enable JavaScript in WebView
                     domStorageEnabled={true}
-                    originWhitelist={['*']}  // Allow all origins (or set specific ones) // Prevents loading untrusted content TODO: Change this to the game's domain
+                    originWhitelist={['*']}  // Allow all origins (or set specific ones), Prevents loading untrusted content TODO: Change this to the game's domain
                     onMessage={(event) => {
                         try {
                             const message = JSON.parse(event.nativeEvent.data); // Parse the incoming message from Phaser
@@ -106,6 +114,7 @@ export default GameScreen;
 const styles = StyleSheet.create({
     container: {
         flex: 1,
+        flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'center',
     },

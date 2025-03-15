@@ -14,7 +14,7 @@ function MainNavigator() {
             <MainStack.Screen name="Login" component={LoginScreen} options={{ headerShown: false }} />
             <MainStack.Screen name="SignUp" component={SignUpScreen} />
             <MainStack.Screen name="VerifyEmail" component={VerifyEmailScreen} />
-            <MainStack.Screen name="Game" component={GameScreen} options={{ headerBackTitle: "Back" }} />
+            <MainStack.Screen name="Game" component={GameScreen} options={{ headerShown: false }} />
         </MainStack.Navigator>
     );
 }
