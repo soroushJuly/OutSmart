@@ -1,5 +1,5 @@
 import axios from "axios";
-import { LOGIN_URL, REGISTER_URL, PROFILE_URL, CHANGE_EMAIL_URL, CHANGE_PASSWORD_URL } from "../../constants/endpoints";
+import { LOGIN_URL, REGISTER_URL, PROFILE_URL, CHANGE_EMAIL_URL, CHANGE_PASSWORD_URL, CHECK_CREDITS_URL } from "../../constants/endpoints";
 import * as SecureStore from 'expo-secure-store';
 
 // ------------ STATUS CHECKER ---------- //
@@ -116,6 +116,29 @@ export async function changeEmail({ email }) {
         const success = response.data?.success;
         const message = response.data?.message;
         return { success, message, data };
+    } catch (error) {
+        const data = error.response?.data;
+        const success = error.response.data.success;
+        const message = error.response.data.message;
+        return { success, message, data };
+    }
+}
+
+export async function checkCredits({ gameId }) {
+    try {
+        const token = await SecureStore.getItemAsync('secure_token');
+        if (!token) {
+            return { success: false, message: 'No token found' };
+        }
+
+        const response = await axios.get(CHECK_CREDITS_URL + `/${gameId}`, {
+            headers: { Authorization: `Bearer ${token}` }
+        });
+
+        const data = response.data.data;
+        const success = response.data.success;
+        const message = response.data.message;
+        return { success, data, message };
     } catch (error) {
         const data = error.response?.data;
         const success = error.response.data.success;

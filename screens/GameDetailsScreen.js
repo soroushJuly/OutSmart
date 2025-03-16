@@ -1,19 +1,29 @@
-import { Text, View, Image, StyleSheet } from "react-native";
+import { Text, View, Image, StyleSheet, Alert } from "react-native";
 import BaseButton from "../components/BaseButton";
 import { useEffect } from "react";
 import { useSelector } from "react-redux";
 import { selectIsAuthenticated, selectUser } from "../store/authSlice";
+import { checkCredits } from "../utils/api/api-auth";
 
 function GameDetailsScreen({ navigation, route }) {
+    const isAuthenticated = useSelector(selectIsAuthenticated);
     const { game } = route.params;
 
     console.log(route.params)
 
-    function handlePlayPress(src) {
-        navigation.navigate('Game', { src: process.env.EXPO_PUBLIC_BASE_URL + src });
+    async function handlePlayPress(src) {
+        if (!isAuthenticated)
+            navigation.navigate('Login');
+        else {
+            const { data, success } = await checkCredits({ gameId: game?.id });
+
+            if (success)
+                navigation.navigate('Game', { src: process.env.EXPO_PUBLIC_BASE_URL + src });
+            else
+                Alert.alert('Error', 'You do not have enough credits to play this game');
+        }
     }
 
-    const isAuthenticated = useSelector(selectIsAuthenticated);
     const user = useSelector(selectUser);
 
     useEffect(() => {

@@ -11,5 +11,6 @@ export const REGISTER_URL = AUTH_URL + '/register';
 export const PROFILE_URL = AUTH_URL + '/profile';
 export const CHANGE_PASSWORD_URL = AUTH_URL + '/change-password';
 export const CHANGE_EMAIL_URL = AUTH_URL + '/change-email';
+export const CHECK_CREDITS_URL = AUTH_URL + '/check-credit';
 export const FAQ_ALL_URL = FAQ_URL + '/all';
 export const GAMES_LIST_URL = GAMES_URL + '/list';
